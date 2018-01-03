@@ -16,6 +16,7 @@
 
 package com.support.android.designlibdemo;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -67,6 +68,13 @@ public class MainActivity extends AppCompatActivity {
         if (navigationView != null) {
             setupDrawerContent(navigationView);
         }
+        View avatar = navigationView.getHeaderView(0).findViewById(R.id.cim_avatar);
+        avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            }
+        });
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         if (viewPager != null) {
@@ -148,8 +156,6 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new CheeseListFragment(), "Category 3");
         adapter.addFragment(new CheeseListFragment(), "Category 4");
         adapter.addFragment(new CheeseListFragment(), "Category 5");
-        adapter.addFragment(new CheeseListFragment(), "Category 6");
-        adapter.addFragment(new CheeseListFragment(), "Category 7");
         viewPager.setAdapter(adapter);
     }
 

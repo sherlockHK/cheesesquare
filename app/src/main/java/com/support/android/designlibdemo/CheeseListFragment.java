@@ -54,7 +54,7 @@ public class CheeseListFragment extends Fragment {
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation()));
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new SimpleStringRecyclerViewAdapter(getActivity(),
-                getRandomSublist(Cheeses.sCheeseStrings, 30)));
+                getRandomSublist(Cheeses.sCheeseStrings, 20)));
     }
 
     private List<String> getRandomSublist(String[] array, int amount) {
@@ -74,6 +74,7 @@ public class CheeseListFragment extends Fragment {
         private List<String> mValues;
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
+            private final View mDel;
             public String mBoundString;
 
             public final View mView;
@@ -85,6 +86,7 @@ public class CheeseListFragment extends Fragment {
                 mView = view;
                 mImageView = (ImageView) view.findViewById(R.id.avatar);
                 mTextView = (TextView) view.findViewById(android.R.id.text1);
+                mDel = view.findViewById(R.id.tv_del);
             }
 
             @Override
@@ -108,7 +110,7 @@ public class CheeseListFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(final ViewHolder holder, int position) {
+        public void onBindViewHolder(final ViewHolder holder, final int position) {
             holder.mBoundString = mValues.get(position);
             holder.mTextView.setText(mValues.get(position));
 
@@ -120,6 +122,14 @@ public class CheeseListFragment extends Fragment {
                     intent.putExtra(CheeseDetailActivity.EXTRA_NAME, holder.mBoundString);
 
                     context.startActivity(intent);
+                }
+            });
+
+            holder.mDel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mValues.remove(position);
+                    notifyDataSetChanged();
                 }
             });
 
