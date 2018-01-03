@@ -146,6 +146,10 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new CheeseListFragment(), "Category 1");
         adapter.addFragment(new CheeseListFragment(), "Category 2");
         adapter.addFragment(new CheeseListFragment(), "Category 3");
+        adapter.addFragment(new CheeseListFragment(), "Category 4");
+        adapter.addFragment(new CheeseListFragment(), "Category 5");
+        adapter.addFragment(new CheeseListFragment(), "Category 6");
+        adapter.addFragment(new CheeseListFragment(), "Category 7");
         viewPager.setAdapter(adapter);
     }
 
