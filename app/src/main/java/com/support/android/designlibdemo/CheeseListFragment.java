@@ -31,6 +31,9 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -57,6 +60,24 @@ public class CheeseListFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new SimpleStringRecyclerViewAdapter(getActivity(),
                 getRandomSublist(Cheeses.sCheeseStrings, 20)));
+
+        String order = getArguments().getString("order");
+        int animOrder;
+        if (("normal").equals(order)){
+            animOrder = LayoutAnimationController.ORDER_NORMAL;
+        }else if (order.equals("reverse")){
+            animOrder = LayoutAnimationController.ORDER_REVERSE;
+        }else {
+            animOrder = LayoutAnimationController.ORDER_RANDOM;
+        }
+
+        Animation animation= AnimationUtils.loadAnimation(getContext(), R.anim.list_view_item_in);   //得到一个LayoutAnimationController对象；
+        LayoutAnimationController controller = new LayoutAnimationController(animation);   //设置控件显示的顺序；
+        controller.setOrder(animOrder);   //设置控件显示间隔时间；
+        controller.setDelay(0.11f);
+        //为recyclerView设置LayoutAnimationController属性；
+        recyclerView.setLayoutAnimation(controller);
+        recyclerView.startLayoutAnimation();
     }
 
     private List<String> getRandomSublist(String[] array, int amount) {

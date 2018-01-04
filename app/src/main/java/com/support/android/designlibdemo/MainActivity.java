@@ -36,9 +36,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,25 +147,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
+        Bundle args1 = new Bundle();
+        args1.putString("order", "normal");
+        Bundle args2 = new Bundle();
+        args2.putString("order", "reverse");
+        Bundle args3 = new Bundle();
+        args3.putString("order", "random");
+
         Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(new CheeseListFragment(), "Category 1");
+        CheeseListFragment fragmentNormal = new CheeseListFragment();
+        CheeseListFragment fragmentReverse = new CheeseListFragment();
+        CheeseListFragment fragmentRandom = new CheeseListFragment();
+        fragmentNormal.setArguments(args1);
+        fragmentReverse.setArguments(args2);
+        fragmentRandom.setArguments(args3);
+
+
+        adapter.addFragment(fragmentNormal, "Category 1");
         adapter.addFragment(new ActivityTransitionFragment(), "Category 2");
-        adapter.addFragment(new CheeseListFragment(), "Category 3");
-        adapter.addFragment(new ActivityTransitionFragment(), "Category 4");
-        adapter.addFragment(new CheeseListFragment(), "Category 5");
+        adapter.addFragment(new LayoutAnimatorFragment(), "Category 3");
+        adapter.addFragment(fragmentReverse, "Category 4");
+        adapter.addFragment(fragmentRandom, "Category 5");
+
         viewPager.setAdapter(adapter);
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                menuItem.setChecked(true);
-                mDrawerLayout.closeDrawers();
-                return true;
-            }
-        });
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        menuItem.setChecked(true);
+                        mDrawerLayout.closeDrawers();
+                        return true;
+                    }
+                });
     }
 
     static class Adapter extends FragmentPagerAdapter {
