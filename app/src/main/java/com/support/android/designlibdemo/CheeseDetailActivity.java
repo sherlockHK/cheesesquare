@@ -17,12 +17,19 @@
 package com.support.android.designlibdemo;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.transition.Explode;
+import android.transition.Fade;
+import android.transition.Slide;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -32,16 +39,28 @@ import java.util.Random;
 public class CheeseDetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_NAME = "cheese_name";
+    public static final String EXTRA_IMG = "cheese_img";
+    private int cheeseImg;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        initActivityAnimation();
+
         setContentView(R.layout.activity_detail);
 
         Intent intent = getIntent();
         final String cheeseName = intent.getStringExtra(EXTRA_NAME);
+        cheeseImg = intent.getIntExtra(EXTRA_IMG, Cheeses.getRandomCheeseDrawable());
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -52,9 +71,33 @@ public class CheeseDetailActivity extends AppCompatActivity {
         loadBackdrop();
     }
 
+    private void initActivityAnimation() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+            String flag = getIntent().getStringExtra("flag");
+            if (TextUtils.isEmpty(flag)) return;
+            switch (flag) {
+                case "explode":
+                    getWindow().setEnterTransition(new Explode());
+                    getWindow().setExitTransition(new Explode());
+                    break;
+                case "slide":
+                    getWindow().setEnterTransition(new Slide());
+                    getWindow().setExitTransition(new Slide());
+                    break;
+                case "fade":
+                    getWindow().setEnterTransition(new Fade());
+                    getWindow().setExitTransition(new Fade());
+                    break;
+            }
+        }else {
+            // TODO: 2018/1/3 兼容低版本
+        }
+    }
+
     private void loadBackdrop() {
         final ImageView imageView = (ImageView) findViewById(R.id.backdrop);
-        Glide.with(this).load(Cheeses.getRandomCheeseDrawable()).centerCrop().into(imageView);
+        Glide.with(this).load(cheeseImg).centerCrop().into(imageView);
     }
 
     @Override

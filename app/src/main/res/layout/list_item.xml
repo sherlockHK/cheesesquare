@@ -28,6 +28,7 @@
         android:id="@+id/avatar"
         android:layout_width="@dimen/list_item_avatar_size"
         android:layout_height="@dimen/list_item_avatar_size"
+        android:transitionName="shareView_img"
         android:layout_marginRight="16dp"/>
 
     <TextView
@@ -36,6 +37,7 @@
         android:layout_height="40dp"
         android:gravity="center_vertical"
         android:layout_toRightOf="@+id/avatar"
+        android:transitionName="shareView_name"
         android:textAppearance="?attr/textAppearanceListItem"/>
 
     <TextView
@@ -43,6 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:text="delete"
+        android:visibility="gone"
         android:gravity="center_vertical"
         android:textColor="@color/cardview_dark_background"
         android:layout_alignParentRight="true" />
